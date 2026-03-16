@@ -42,7 +42,17 @@ docker compose up -d
 
 ---
 
-### 4. Импортировать workflow в n8n
+### 4. Импортировать credentials в n8n
+
+После запуска контейнеров выполните команду для импорта workflow из репозитория:
+
+```bash
+docker exec -u node -it n8n-rag-demo n8n import:credentials --input=/sync/credentials.json
+```
+
+---
+
+### 5. Импортировать workflow в n8n
 
 После запуска контейнеров выполните команду для импорта workflow из репозитория:
 
@@ -52,12 +62,37 @@ docker exec -it n8n-rag-demo n8n import:workflow --separate --input=/sync/workfl
 
 ---
 
-### 5. Создать учетную запись в n8n
+### 6. Создать учетную запись в n8n
 
 1. Откройте **n8n** в браузере http://localhost:5678/.
 2. Завершите процесс регистрации.
 3. Создайте нового пользователя.
 
+---
+
+### 7. Установить ноду (qdrant)
+
+Открыть сценарий 01_RAG_add_files_to_Qdrant, выбрать ноду Upsert Points - нажать install
+
+---
+
+### 8. Заполнить credentials внутри n8n
+
+1. Header Auth Openrouter:
+    Name: Authorization
+    Value: Bearer {{ $env.OPENROUTER_API_KEY }}
+
+2. QdrantApi account
+    API Key: {{ $env.QDRANT_API_KEY }}
+    Qdrant URL *: {{ $env.QDRANT_REST_URL }}
+
+3. Qdrant account
+    API Key: {{ $env.QDRANT_API_KEY }}
+    REST URL *: {{ $env.QDRANT_REST_URL }}
+
+4. OpenRouter account
+    API Key *: {{ $env.OPENROUTER_API_KEY }}
+ 
 ---
 
 ## Примечания
