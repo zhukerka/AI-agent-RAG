@@ -1,0 +1,26 @@
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n-rag-demo
+    ports:
+      - "5678:5678"
+    environment:
+      # n8n user management / basic auth (минимальный вариант защиты UI)
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASSWORD}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - QDRANT_REST_URL=${QDRANT_REST_URL}
+      - QDRANT_API_KEY=${QDRANT_API_KEY}
+
+      # encryption key (важно для шифрования credentials)
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./sync:/sync
+    restart: unless-stopped
+
+volumes:
+  n8n_data:
